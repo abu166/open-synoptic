@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 export default defineConfig({
+  base: process.env.GITHUB_PAGES === "true" ? "/open-synoptic/" : "/",
   resolve: { alias: { "@aetheris/i18n": new URL("./src/i18n", import.meta.url).pathname } },
   build: {
     rollupOptions: {

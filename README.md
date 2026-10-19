@@ -2,6 +2,12 @@
 
 A responsive meteorological observatory built with React, TypeScript, Vite, TanStack Query, Zustand, Recharts, and MapLibre GL. It uses live public data, requires no API keys, and distinguishes live forecasts, saved forecasts, and explicitly labeled planning estimates.
 
+## Live app and deployment
+
+Use [AETHERIS PRO on GitHub Pages](https://abu166.github.io/open-synoptic/).
+
+Pushes to `main` run the tests, verify the translation catalog, build, and deploy through GitHub Actions. The Pages build sets `GITHUB_PAGES=true` to serve assets under `/open-synoptic/`. Local and other hosting builds retain `/` as their base path. GitHub repository Settings → Pages must use **GitHub Actions** as the source.
+
 ## Run
 
 Use Node.js 22.18 or newer.
