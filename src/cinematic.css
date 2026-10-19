@@ -5852,29 +5852,578 @@ html {
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 22px;
 }
-.top-bar .brand, .top-bar .top-right { flex-shrink: 0; }
-.top-bar .main-nav { min-width: 0; justify-content: center; flex-wrap: wrap; }
-.top-bar .top-right { justify-content: flex-end; }
-.language-picker { min-height: 42px; max-width: 140px; padding: 8px 12px; border: 1px solid #ffffff40; border-radius: 14px; background: #16375055; color: white; font-size: 14px; cursor: pointer; }
-.language-picker option { background: #163750; color: white; }
-.top-bar .live-status { max-width: 150px; line-height: 1.4; }
+.top-bar .brand,
+.top-bar .top-right {
+  flex-shrink: 0;
+}
+.top-bar .main-nav {
+  min-width: 0;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.top-bar .top-right {
+  justify-content: flex-end;
+}
+.language-picker {
+  min-height: 42px;
+  max-width: 140px;
+  padding: 8px 12px;
+  border: 1px solid #ffffff40;
+  border-radius: 14px;
+  background: #16375055;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+.language-picker option {
+  background: #163750;
+  color: white;
+}
+.top-bar .live-status {
+  max-width: 150px;
+  line-height: 1.4;
+}
 @media (max-width: 1350px) {
-  .top-bar { grid-template-columns: 1fr auto; gap: 16px; }
-  .top-bar .main-nav { grid-row: 2; grid-column: 1 / -1; margin: 0; justify-content: flex-start; }
-  .top-bar .top-right { grid-column: 2; grid-row: 1; }
+  .top-bar {
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+  }
+  .top-bar .main-nav {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    margin: 0;
+    justify-content: flex-start;
+  }
+  .top-bar .top-right {
+    grid-column: 2;
+    grid-row: 1;
+  }
 }
 @media (max-width: 800px) {
-  .top-bar { margin-inline: -24px; padding-inline: 24px; }
-  .top-bar .live-status { display: none; }
-  .top-bar .main-nav { flex-wrap: nowrap; overflow-x: auto; }
-  .top-bar .top-right { display: flex; }
+  .top-bar {
+    margin-inline: -24px;
+    padding-inline: 24px;
+  }
+  .top-bar .live-status {
+    display: none;
+  }
+  .top-bar .main-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  .top-bar .top-right {
+    display: flex;
+  }
 }
 @media (max-width: 480px) {
-  .top-bar { margin-inline: -16px; padding: 18px 16px 12px; gap: 15px 8px; }
-  .top-bar .brand { font-size: 18px; letter-spacing: 1.4px; gap: 8px; }
-  .top-bar .brand .pro { font-size: 11px; padding: 4px; }
-  .top-bar .top-right { gap: 5px; }
-  .top-bar .avatar { display: none; }
-  .language-picker { width: 96px; max-width: 96px; padding: 7px; }
-  .top-bar .main-nav button { font-size: 14px; }
+  .top-bar {
+    margin-inline: -16px;
+    padding: 18px 16px 12px;
+    gap: 15px 8px;
+  }
+  .top-bar .brand {
+    font-size: 18px;
+    letter-spacing: 1.4px;
+    gap: 8px;
+  }
+  .top-bar .brand .pro {
+    font-size: 11px;
+    padding: 4px;
+  }
+  .top-bar .top-right {
+    gap: 5px;
+  }
+  .top-bar .avatar {
+    display: none;
+  }
+  .language-picker {
+    width: 96px;
+    max-width: 96px;
+    padding: 7px;
+  }
+  .top-bar .main-nav button {
+    font-size: 14px;
+  }
+}
+
+/* Personal planning workspace */
+.decision-hub,
+.sky-planner,
+.verification-panel {
+  padding: 28px;
+  min-width: 0;
+}
+.decision-hub .eyebrow,
+.sky-planner .eyebrow,
+.verification-panel .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.decision-hub h3,
+.sky-planner h3 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+.decision-hub h4,
+.sky-planner h4 {
+  font-size: 1.05rem;
+  margin: 14px 0 8px;
+}
+.decision-hub p,
+.sky-planner p,
+.verification-panel p {
+  line-height: 1.65;
+  color: #b0bdcc;
+  font-size: 0.86rem;
+  margin: 10px 0;
+}
+.decision-hub button,
+.sky-planner button,
+.verification-panel button,
+.install-app button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid #b8c9d139;
+  border-radius: 10px;
+  background: #b8d6d00d;
+  color: #e6eee9;
+  padding: 10px 13px;
+  cursor: pointer;
+  min-height: 40px;
+  font: inherit;
+  font-size: 0.8rem;
+}
+.decision-hub button:hover,
+.sky-planner button:hover,
+.verification-panel button:hover {
+  background: #b8d6d01c;
+  border-color: #b8c9d178;
+}
+.decision-hub button[aria-pressed="true"],
+.sky-planner button[aria-pressed="true"] {
+  border-color: #b4d4ba;
+  background: #a4d2b626;
+  color: #d6f0d8;
+}
+.decision-hub button:focus-visible,
+.sky-planner button:focus-visible,
+.verification-panel button:focus-visible {
+  outline: 2px solid #eccd91;
+  outline-offset: 3px;
+}
+.decision-briefing {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 22px 0;
+}
+.decision-briefing > div {
+  border-left: 2px solid #c1d8c34a;
+  padding-left: 18px;
+}
+.decision-briefing h3 {
+  font-size: 1.12rem;
+  color: #f1e3cb;
+}
+.decision-toolbar,
+.saved-plan > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 24px 0 16px;
+}
+.decision-toolbar h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.decision-toolbar small {
+  font-size: 0.7rem;
+  color: #9dabba;
+}
+.decision-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.saved-plans-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.saved-plan {
+  background: linear-gradient(145deg, #c4d8bf0d, #0a15283d);
+  border: 1px solid #c3d2dd26;
+  border-radius: 18px;
+  padding: 22px;
+  min-width: 0;
+}
+.saved-plan > header {
+  margin: 0 0 14px;
+}
+.saved-plan .eyebrow {
+  font-size: 0.62rem;
+}
+.saved-plan h3 {
+  overflow-wrap: anywhere;
+}
+.plan-status {
+  display: inline-flex;
+  font-size: 0.72rem;
+  border-radius: 20px;
+  padding: 7px 11px;
+  background: #ccb17a18;
+  color: #e0c48f;
+}
+.plan-status.fits {
+  background: #a5d3b319;
+  color: #b7dfbf;
+}
+.decision-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+.decision-metrics span {
+  font-size: 0.68rem;
+  color: #aab7c7;
+  line-height: 1.5;
+}
+.decision-metrics b {
+  display: block;
+  color: #e6e7df;
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.decision-details {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #d2e1e21c;
+}
+.decision-details summary {
+  cursor: pointer;
+  color: #c3d4d9;
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+.decision-details summary svg {
+  vertical-align: middle;
+}
+.decision-message {
+  overflow-wrap: anywhere;
+}
+.plan-empty {
+  text-align: center;
+  padding: 30px 14px;
+  border: 1px dashed #bfd5df30;
+  border-radius: 16px;
+  margin: 20px 0;
+}
+.plan-empty > svg {
+  color: #c2d7b8;
+}
+.plan-empty p {
+  max-width: 620px;
+  margin: 12px auto 20px;
+}
+.plan-editor {
+  border: 1px solid #e6c98b55;
+  background: #14202b88;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 20px 0;
+  scroll-margin-top: 100px;
+}
+.plan-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 22px 0;
+}
+.plan-form-grid label,
+.verification-panel label {
+  font-size: 0.74rem;
+  color: #bdccd5;
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+}
+.plan-form-grid input,
+.verification-panel select {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid #b4cbd540;
+  border-radius: 8px;
+  color: #ebebdf;
+  background: #0c1728;
+  font: inherit;
+  color-scheme: dark;
+}
+.plan-form-grid .plan-check {
+  flex-direction: row;
+  align-items: center;
+}
+.plan-check input {
+  width: 19px;
+  min-height: 19px;
+  height: 19px;
+  accent-color: #b9d5af;
+}
+.plan-editor fieldset {
+  border: 1px solid #b4cbd530;
+  border-radius: 10px;
+  padding: 14px;
+  margin: 20px 0;
+}
+.plan-editor legend {
+  font-size: 0.75rem;
+  color: #bdccd5;
+  padding: 0 7px;
+}
+.sky-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 32px;
+  margin-top: 20px;
+}
+.sky-light-panel,
+.sky-moon-panel {
+  min-width: 0;
+}
+.sky-moon-panel {
+  border-left: 1px solid #d0d9e12a;
+  padding-left: 30px;
+}
+.sky-horizon {
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 50% 100%, #e6a45550, transparent 65%);
+  border-bottom: 1px solid #e6c48e44;
+  margin-bottom: 20px;
+}
+.sky-horizon > span {
+  position: absolute;
+  width: 80%;
+  height: 150px;
+  border: 1px solid #f3ce9a33;
+  top: 50px;
+  border-radius: 50%;
+}
+.sky-horizon > svg {
+  color: #e8c78e;
+  position: absolute;
+  bottom: 8px;
+}
+.sky-window-list {
+  display: grid;
+  gap: 8px;
+  margin: 20px 0;
+}
+.sky-window-list button {
+  justify-content: space-between;
+  text-align: left;
+  flex-wrap: wrap;
+}
+.sky-window-list strong {
+  font-variant-numeric: tabular-nums;
+  color: #f0d9ae;
+}
+.sky-selection {
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #dfbd7c33;
+  background: linear-gradient(140deg, #c9945c14, #6989c10d);
+}
+.sky-palette {
+  display: flex;
+  height: 25px;
+  border-radius: 7px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.sky-palette span {
+  flex: 1;
+}
+.moon-portrait {
+  height: 135px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse, #819ac122, transparent 65%);
+  margin-bottom: 20px;
+}
+.moon-sphere {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 50px #bacce516;
+}
+.moon-sphere span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+.moon-sphere:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #6d7d902b 5%, transparent 6%),
+    radial-gradient(circle at 65% 65%, #6d7d9040 10%, transparent 12%),
+    radial-gradient(circle at 40% 70%, #6d7d9038 6%, transparent 7%);
+  box-shadow: inset -8px 0 15px #0004;
+}
+.moon-events p,
+.moon-milestone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid #d0d9e11f;
+}
+.moon-milestone small {
+  display: block;
+  color: #9dadbf;
+  font-size: 0.75rem;
+  margin-top: 6px;
+}
+.moon-milestone strong {
+  font-size: 0.85rem;
+}
+.verification-scroll {
+  overflow: auto;
+  margin: 20px 0;
+}
+.verification-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  text-align: left;
+}
+.verification-panel th,
+.verification-panel td {
+  padding: 15px;
+  border-bottom: 1px solid #bdd0da25;
+  white-space: nowrap;
+}
+.verification-panel th {
+  font-weight: 500;
+  color: #d2dacb;
+}
+.verification-panel td {
+  color: #bdc9d6;
+}
+.verification-panel a {
+  color: #c6d9c2;
+  font-size: 0.8rem;
+}
+.install-app {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 22px 0;
+  border-top: 1px solid #c2cedd25;
+  margin-top: 30px;
+  font-size: 0.8rem;
+  color: #b6c7d1;
+}
+.install-app p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+.install-app small {
+  color: #91a2b2;
+}
+.install-app summary {
+  cursor: pointer;
+}
+.install-app > div {
+  max-width: 760px;
+}
+@media (max-width: 900px) {
+  .plan-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .saved-plans-grid {
+    grid-template-columns: 1fr;
+  }
+  .decision-briefing {
+    gap: 16px;
+  }
+  .sky-layout {
+    gap: 20px;
+  }
+  .sky-moon-panel {
+    padding-left: 20px;
+  }
+}
+@media (max-width: 600px) {
+  .decision-hub,
+  .sky-planner,
+  .verification-panel {
+    padding: 20px 16px;
+  }
+  .decision-briefing,
+  .sky-layout {
+    grid-template-columns: 1fr;
+  }
+  .decision-briefing {
+    gap: 20px;
+  }
+  .sky-moon-panel {
+    padding: 24px 0 0;
+    border-left: 0;
+    border-top: 1px solid #d0d9e12a;
+  }
+  .plan-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .plan-editor {
+    padding: 16px;
+  }
+  .saved-plan {
+    padding: 17px;
+  }
+  .decision-metrics b {
+    font-size: 1rem;
+  }
+  .sky-planner > .card-heading {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
+  .verification-panel th,
+  .verification-panel td {
+    padding: 12px;
+  }
+}
+.input-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.7rem;
+  text-align: left;
+}
+.input-table th,
+.input-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #d0d9e122;
+  white-space: nowrap;
+  color: #b2c3d0;
 }

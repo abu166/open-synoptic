@@ -1,3 +1,7 @@
+import PlanningHub from "./components/planning/PlanningHub";
+import SkyPlanner from "./components/planning/SkyPlanner";
+import ForecastVerification from "./components/planning/ForecastVerification";
+import InstallApp from "./components/planning/InstallApp";
 import { useLanguage } from "./i18n/locale";
 import OutdoorHourFinder from "./components/bento/OutdoorHourFinder";
 import AltitudeProfileExplorer from "./components/bento/AltitudeProfileExplorer";
@@ -57,8 +61,8 @@ const chapters: Record<
 > = {
   overview: {
     eyebrow: "THE LIVING STORY",
-    title: "Not just the weather. The way the day feels.",
-    description: "A little more wonder. A little less second-guessing.",
+    title: "Your weather. Your plans. Your next good moment.",
+    description: "Know when to go, what to prepare, and what changed.",
   },
   radar: {
     eyebrow: "THE PLANET, IN MOTION",
@@ -262,7 +266,9 @@ export default function App() {
               ? "FEED INTERRUPTED"
               : weather.isPending
                 ? "FINDING YOUR SKY"
-                : "YOUR SKY IS CONNECTED"
+                : source?.provenance?.source === "cached"
+                  ? "SAVED FORECAST"
+                  : "YOUR SKY IS CONNECTED"
           }
           workspace={workspace}
           onNavigate={navigate}
@@ -311,17 +317,21 @@ export default function App() {
           )}
           {props && w && source && (
             <>
-              <AnimatePresence mode="wait">
+              <div className="workspace-content">
                 <motion.div
                   className={`dashboard ${workspace}-workspace`}
                   key={workspace}
-                  initial={{ opacity: 0, y: 18 }}
+                  initial={false}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                 >
                   {workspace === "overview" ? (
                     <>
+                      <PlanningHub
+                        weather={source}
+                        city={city}
+                        onOpen={() => navigate("intelligence")}
+                      />
                       <HeroSynopticCard
                         {...props}
                         anomaly={
@@ -337,21 +347,16 @@ export default function App() {
                       />
                       <HumanComfortAndWardrobeCard {...props} />
                       <MinutelyNowcastCard {...props} />
-                      <EphemerisHorizonCard {...props} />
                       <div className="dashboard-section span-12">
-                        <span>THE BIGGER PICTURE</span>
+                        <span>EXPLORE YOUR FORECAST</span>
+                        <button onClick={() => navigate("forecast")}>
+                          Models, charts & evidence <ArrowUpRight size={18} />
+                        </button>
                         <button onClick={() => navigate("radar")}>
-                          Step into the planet
-                          <ArrowUpRight size={18} />
+                          Open radar & globe <ArrowUpRight size={18} />
                         </button>
                       </div>
-                      {radar()}
-                      <WindShearCompassCard {...props} />
-                      <AirQualityPollenCard {...props} />
-                      <SynopticWorkbench {...props} />
-                      <ThermodynamicsCard {...props} />
-                      <DailyForecastMatrix {...props} />
-                      <SkyAestheticsCard {...props} />
+                      <SkyPlanner {...props} />
                     </>
                   ) : workspace === "radar" ? (
                     <>
@@ -382,6 +387,7 @@ export default function App() {
                         onChange={setOffset}
                       />
                       <SynopticWorkbench {...props} forceEnsemble />
+                      <ForecastVerification city={city} />
                       <AltitudeProfileExplorer {...props} />
                       <DailyForecastMatrix {...props} />
                       <SkyAestheticsCard {...props} />
@@ -402,6 +408,8 @@ export default function App() {
                         offset={offset}
                         onChange={setOffset}
                       />
+                      <PlanningHub weather={source} city={city} detailed />
+                      <SkyPlanner weather={source} city={city} air={air.data} />
                       <OutdoorHourFinder {...props} />
                       <LifestylePlanners {...props} />
                       <SkyAestheticsCard {...props} />
@@ -414,9 +422,10 @@ export default function App() {
                     </>
                   )}
                 </motion.div>
-              </AnimatePresence>
+              </div>
             </>
           )}
+          <InstallApp />
           <footer className="site-footer">
             <button
               className="brand footer-brand"
