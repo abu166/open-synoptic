@@ -89,6 +89,12 @@ export type AirVariable =
   | "olive_pollen"
   | "ragweed_pollen";
 export interface Forecast {
+  provenance?: {
+    provider: string;
+    model: string;
+    fetchedAt: number;
+    source: "live" | "cached";
+  };
   latitude: number;
   longitude: number;
   elevation: number;
@@ -148,6 +154,7 @@ export const todayDailyIndex = (w: Forecast) =>
 export const todayMean = (w: Forecast) =>
   value(w.daily, "temperature_2m_mean", todayDailyIndex(w));
 export interface EnsembleForecast {
+  sampleSources?: Record<string, Array<"model" | "estimated">>;
   estimatedModels?: string[];
   modelSources?: Record<string, string>;
   latitude: number;

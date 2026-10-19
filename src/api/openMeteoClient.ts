@@ -25,6 +25,17 @@ export class DataServiceError extends Error {
     this.name = "DataServiceError";
   }
 }
+function decoded<T>(body: string, fetchedAt: number, cached: boolean): T {
+  const data = JSON.parse(body);
+  if (data && typeof data === "object" && !Array.isArray(data))
+    data.provenance = {
+      provider: "Open-Meteo",
+      model: "best_match",
+      fetchedAt,
+      source: cached ? "cached" : "live",
+    };
+  return data as T;
+}
 const responseMemory = new Map<string, { expires: number; body: string }>();
 async function requestUnshared<T>(
   url: string,
@@ -49,13 +60,14 @@ async function requestUnshared<T>(
     }
   } catch {}
   if (cached && cached.expires > Date.now())
-    return JSON.parse(cached.body) as T;
+    return decoded<T>(cached.body, cached.expires - ttl, true);
   try {
     const until =
       typeof window === "undefined"
         ? 0
         : Number(window.sessionStorage.getItem(cooldownKey));
-    if (until > Date.now() && cached) return JSON.parse(cached.body) as T;
+    if (until > Date.now() && cached)
+      return decoded<T>(cached.body, cached.expires - ttl, true);
     if (until > Date.now())
       throw new DataServiceError(
         "This public data service is taking a short rate-limit break. Other views remain available.",
@@ -72,7 +84,7 @@ async function requestUnshared<T>(
         : AbortSignal.timeout(45000),
     });
   } catch (error) {
-    if (cached) return JSON.parse(cached.body) as T;
+    if (cached) return decoded<T>(cached.body, cached.expires - ttl, true);
     throw error;
   }
   if (!response.ok) {
@@ -85,7 +97,7 @@ async function requestUnshared<T>(
             String(Date.now() + retrySeconds * 1000),
           );
       } catch {}
-    if (cached) return JSON.parse(cached.body) as T;
+    if (cached) return decoded<T>(cached.body, cached.expires - ttl, true);
     throw new DataServiceError(
       response.status === 429
         ? "The public data provider is temporarily rate limited. Please give it a little time."
@@ -102,7 +114,7 @@ async function requestUnshared<T>(
   try {
     storage()?.setItem(key, JSON.stringify(entry));
   } catch {}
-  return data;
+  return decoded<T>(body, Date.now(), false);
 }
 const inFlight = new Map<string, Promise<unknown>>();
 export async function request<T>(
@@ -161,8 +173,29 @@ export const normalizeForecast = (w: Forecast): Forecast => {
   );
   return w;
 };
-export const getForecast = async (c: City, signal?: AbortSignal) =>
-  normalizeForecast(await fetchForecast(c, signal));
+export const getForecast = async (
+  c: City,
+  signal?: AbortSignal,
+): Promise<Forecast> => {
+  try {
+    if (typeof navigator !== "undefined" && !navigator.onLine)
+      throw new Error("Offline");
+    const forecast = normalizeForecast(await fetchForecast(c, signal));
+    writeStored(`aetheris-offline-forecast:${cityKey(c)}`, forecast);
+    return forecast;
+  } catch (error) {
+    if (signal?.aborted) throw error;
+    const saved = readStored<Forecast>(
+      `aetheris-offline-forecast:${cityKey(c)}`,
+    );
+    if (saved?.provenance && saved.hourly?.time?.length)
+      return {
+        ...saved,
+        provenance: { ...saved.provenance, source: "cached" },
+      };
+    throw error;
+  }
+};
 export async function fetchEnsemble(
   c: City,
   signal?: AbortSignal,

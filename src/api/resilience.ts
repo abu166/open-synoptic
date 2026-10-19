@@ -186,13 +186,16 @@ export function parseEnsemble(
     ) ?? [];
   const lookup = new Map(sourceTimes.map((t, i) => [t, i]));
   const hourly: EnsembleForecast["hourly"] = { time: [...time] };
+  const sampleSources: NonNullable<EnsembleForecast["sampleSources"]> = {};
   const estimatedModels: string[] = [],
     modelSources: Record<string, string> = {};
   const anchor = currentIndex(primary);
   for (const [j, model] of MODEL_IDS.entries()) {
     let estimated = false;
     for (const field of ["temperature_2m", "precipitation", "wind_speed_10m"]) {
-      hourly[`${field}_${model}`] = time.map((t, i) => {
+      const sampleKey = `${field}_${model}`;
+      sampleSources[sampleKey] = [];
+      hourly[sampleKey] = time.map((t, i) => {
         const k = lookup.get(t);
         const aliases =
           model === "ecmwf_ifs04" ? ["ecmwf_ifs04", "ecmwf_ifs025"] : [model];
@@ -202,10 +205,12 @@ export function parseEnsemble(
               ? NaN
               : Number(source?.[`${field}_${alias}`]?.[k] ?? NaN);
           if (Number.isFinite(real)) {
+            sampleSources[sampleKey][i] = "model";
             modelSources[model] = alias;
             return real;
           }
         }
+        sampleSources[sampleKey][i] = "estimated";
         if (i >= anchor && i < anchor + 72) estimated = true;
         const base = value(primary.hourly, field, i),
           horizon = Math.max(0, i - anchor);
@@ -245,6 +250,7 @@ export function parseEnsemble(
     timezone: primary.timezone,
     hourly,
     estimatedModels,
+    sampleSources,
     modelSources,
   };
 }
